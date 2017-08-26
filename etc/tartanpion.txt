@@ -1,5 +1,0 @@
-voiture
-car
-nascar
-chat
-maison

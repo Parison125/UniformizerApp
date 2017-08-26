@@ -1,8 +1,5 @@
 package org.parison.cool;
 
-import org.apache.camel.main.Main;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.*;
 import org.apache.log4j.Logger;
 
@@ -15,24 +12,19 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
 
-/*       InputStream excelFile = ClassLoader.getSystemResource("tartanpion.txt").openStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(excelFile));
-        String line ="";
-        while ((line = reader.readLine()) != null ) {
-            System.out.println(line);
-        }*/
+        LOGGER.debug("Beginning application execution ");
+        File theseExcel = new File("etc/these.xlsx");
 
+        if ( theseExcel.exists()) {
+            FileInputStream fileIn = new FileInputStream(theseExcel);
+            LOGGER.debug(" Creating input stream from " + theseExcel.getPath());
+            CheckService checkService = new CheckService(fileIn);
+        }
+        else {
+            LOGGER.warn("Le fichier "+theseExcel.getPath()+" n'existe pas");
+            System.exit(1);
+        }
 
-        LOGGER.debug(" Distance = "+StringUtils.getLevenshteinDistance("","CC-11-Etiquettes"));
-        LOGGER.debug(" Distance = "+StringUtils.getLevenshteinDistance("CC-10etiquete","CC-11-Prince"));
-        LOGGER.debug("done");
-       /* String file = "etc/tartanpion.txt";
-        System.out.print("Fichier a lire "+file);
-        File iz = new File(file);
-        FileOutputStream fileout = new FileOutputStream(iz);
-        fileout.write("Contenu qojfokqopcekc".getBytes());
-        fileout.flush();
-        fileout.close();*/
     }
 
 }
