@@ -13,20 +13,22 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
 
-/*        InputStream excelFile = ClassLoader.getSystemResource("tartanpion.txt").openStream();
+/*       InputStream excelFile = ClassLoader.getSystemResource("tartanpion.txt").openStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(excelFile));
         String line ="";
         while ((line = reader.readLine()) != null ) {
             System.out.println(line);
         }*/
 
-        String file = "etc/tartanpion.txt";
+        System.out.println(" Distance = "+StringUtils.getLevenshteinDistance("","CC-11-Etiquettes"));
+        System.out.println(" Distance = "+StringUtils.getLevenshteinDistance("CC-10etiquete","CC-11-Prince"));
+       /* String file = "etc/tartanpion.txt";
         System.out.print("Fichier a lire "+file);
         File iz = new File(file);
         FileOutputStream fileout = new FileOutputStream(iz);
         fileout.write("Contenu qojfokqopcekc".getBytes());
         fileout.flush();
-        fileout.close();
+        fileout.close();*/
     }
 
 }
