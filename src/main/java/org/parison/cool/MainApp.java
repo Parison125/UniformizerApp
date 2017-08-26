@@ -20,9 +20,9 @@ public class MainApp {
         if ( theseExcel.exists()) {
             InputStream fileIn = new FileInputStream(theseExcel);
             LOGGER.debug(" Creating input stream from " + theseExcel.getPath());
-            //CheckService checkService = new CheckService(fileIn);
-            //checkService.processExcelFile();
-            fileIn.close();
+            CheckService checkService = new CheckService(fileIn);
+            checkService.processExcelFile();
+            //fileIn.close();
         }
         else {
             LOGGER.warn("Le fichier "+theseExcel.getPath()+" n'existe pas");
