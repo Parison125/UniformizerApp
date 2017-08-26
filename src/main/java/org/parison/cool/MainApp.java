@@ -4,12 +4,14 @@ import org.apache.camel.main.Main;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import org.apache.log4j.Logger;
 
 /**
  * @Parison Rvmld
  */
 public class MainApp {
 
+    final static Logger LOGGER = Logger.getLogger(MainApp.class);
 
     public static void main(String... args) throws Exception {
 
@@ -20,8 +22,10 @@ public class MainApp {
             System.out.println(line);
         }*/
 
-        System.out.println(" Distance = "+StringUtils.getLevenshteinDistance("","CC-11-Etiquettes"));
-        System.out.println(" Distance = "+StringUtils.getLevenshteinDistance("CC-10etiquete","CC-11-Prince"));
+
+        LOGGER.debug(" Distance = "+StringUtils.getLevenshteinDistance("","CC-11-Etiquettes"));
+        LOGGER.debug(" Distance = "+StringUtils.getLevenshteinDistance("CC-10etiquete","CC-11-Prince"));
+        LOGGER.debug("done");
        /* String file = "etc/tartanpion.txt";
         System.out.print("Fichier a lire "+file);
         File iz = new File(file);
