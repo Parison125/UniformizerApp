@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.parison.cool.data.Defaut;
@@ -16,9 +13,7 @@ import org.parison.cool.data.UsineDivision;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Parison on 26/08/2017.
@@ -46,28 +41,47 @@ public class CheckService {
                 if ( i >= 1) {
 
                     //Checking usine and division
+                    row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+                    row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
                     String usine = row.getCell(1).getStringCellValue().trim();
                     String division = row.getCell(2).getStringCellValue().trim();
+                    if (usine.equals("")|| usine == null || division.equals("")
+                            || division == null || usine.equals("NA") || division.equals("NA"))
+                    {
+                        continue;
+                    }
                     UsineDivision trueUsineDiv = checkUsineDivision(usine, division);
                     row.getCell(1).setCellValue(trueUsineDiv.getUsine());
                     row.getCell(2).setCellValue(trueUsineDiv.getDivision());
 
                     //checking date
                     String date = row.getCell(3).getStringCellValue().trim();
+                    if (date.equals("") || date == null || date.equals("NA"))
+                    {
+                        continue;
+                    }
                     String trueDate = checkDate(date);
                     row.getCell(3).setCellValue(trueDate);
 
                     //Checking Famille qualité
                     String familleQualite = row.getCell(5).getStringCellValue().trim();
+                    if (familleQualite.equals("") || familleQualite == null || familleQualite.equals("NA"))
+                    {
+                        continue;
+                    }
                     String trueFamilleQualite = checkFamilleQualite(familleQualite);
                     row.getCell(5).setCellValue(trueFamilleQualite);
 
                     //Checking defauts
                     String defaut = row.getCell(7).getStringCellValue().trim();
+                    if (defaut.equals("") || defaut == null || defaut.equals("NA"))
+                    {
+                        continue;
+                    }
                     String trueDefauts = checkDefauts(defaut);
                     row.getCell(7).setCellValue(trueDefauts);
 
-                    break;
+                    //break;
                 }
 
                 i++;
@@ -83,7 +97,7 @@ public class CheckService {
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         } catch ( Exception e) {
-            LOGGER.error(e.getMessage());
+            e.printStackTrace();
         } finally {
         }
     }
@@ -133,11 +147,41 @@ public class CheckService {
         String result = null;
         List<String> listMois = new ArrayList<>(Arrays.asList("Janvier","Février","Mars","Avril","Mai","Juin","Juillet",
                 "Août","Septembre","Octobre","Novembre","Décembre"));
+        Map<String,String> dictMois = new HashMap<>();
+        dictMois.put("Janvier","Janvier");
+        dictMois.put("Janv","Janvier");
+        dictMois.put("Jan","Janvier");
+        dictMois.put("Février","Février");
+        dictMois.put("Fév","Février");
+        dictMois.put("Fev","Février");
+        dictMois.put("Févr","Février");
+        dictMois.put("Mars","Mars");
+        dictMois.put("Avril","Avril");
+        dictMois.put("Avr","Avril");
+        dictMois.put("Avr","Avril");
+        dictMois.put("Mai","Mai");
+        dictMois.put("Juin","Juin");
+        dictMois.put("Jun","Juin");
+        dictMois.put("Juillet","Juillet");
+        dictMois.put("Jui","Juillet");
+        dictMois.put("Aout","Aout");
+        dictMois.put("Septembre","Septembre");
+        dictMois.put("Sep","Septembre");
+        dictMois.put("Octobre","Octobre");
+        dictMois.put("Oct","Octobre");
+        dictMois.put("Octbr","Octobre");
+        dictMois.put("Novembre","Novembre");
+        dictMois.put("Nov","Novembre");
+        dictMois.put("Décembre","Décembre");
+        dictMois.put("Déc","Décembre");
+        dictMois.put("Dec","Décembre");
 
         LOGGER.debug("Date en entrée "+date);
-        if (listMois.contains(date)) {
-            result = date;
-            LOGGER.debug(" iter 1 - Date result "+date);
+        for (String key : dictMois.keySet()) {
+            if (date.toLowerCase().equals(dictMois.get(key).toLowerCase())) {
+                result = dictMois.get(key) ;
+                LOGGER.debug(" iter 1 - Date result "+date);
+            }
         }
 
         if (result == null ) {
@@ -176,11 +220,26 @@ public class CheckService {
         String result = null;
         Gson gson = new Gson();
         String[] splitedParameters = fqParameter.split("-");
+        FamilleQualite[] familleQualiteList = gson.fromJson(new FileReader("etc/familleQualite.json"), FamilleQualite[].class);
+
+        if (splitedParameters.length == 1) {
+            for (FamilleQualite familleQualite : familleQualiteList) {
+                if (splitedParameters[0].toLowerCase().equals(familleQualite.getName().toLowerCase()) ) {
+                    result = familleQualite.getFullName();
+                    LOGGER.debug("Iter2 - found result = "+result);
+                    return  result;
+                }
+
+            }
+
+            if (result == null){
+                return fqParameter;
+            }
+        }
         String entryParameter = splitedParameters[0]+"-"+splitedParameters[1]+"-"+splitedParameters[2];
         entryParameter = entryParameter.toLowerCase().trim();
         String entryParameterCodeNumber = splitedParameters[2];
 
-        FamilleQualite[] familleQualiteList = gson.fromJson(new FileReader("etc/familleQualite.json"), FamilleQualite[].class);
         LOGGER.debug("EntryParameter "+entryParameter);
         LOGGER.debug("Entry code "+entryParameterCodeNumber);
         for (FamilleQualite familleQualite : familleQualiteList) {

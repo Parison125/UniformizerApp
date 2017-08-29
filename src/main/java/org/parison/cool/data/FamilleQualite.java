@@ -25,6 +25,9 @@ public class FamilleQualite {
 	}
 	
 	public String getCodeNumber() {
+
+		if (this.name.equals("NA"))
+				return "NA";
 		String [] splitedCode = code.split("-");
 		return splitedCode[2];
 	}
