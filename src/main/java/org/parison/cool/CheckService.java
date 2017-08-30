@@ -3,16 +3,12 @@ package org.parison.cool;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.parison.cool.data.Defaut;
 import org.parison.cool.data.FamilleQualite;
 import org.parison.cool.data.UsineDivision;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
