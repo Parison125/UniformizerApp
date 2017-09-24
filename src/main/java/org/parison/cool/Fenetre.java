@@ -1,6 +1,7 @@
 package org.parison.cool;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +13,10 @@ public  class Fenetre extends JFrame {
 
     JFrame izy;
     final static Logger LOGGER = Logger.getLogger(Fenetre.class);
+    static ApplicationContext applicationContext;
 
-    public Fenetre () {
-
+    public Fenetre (ApplicationContext applicationContext) {
+        Fenetre.applicationContext = applicationContext;
         this.setTitle("Uniformizer App");
         this.setSize(300,150);
         this.getContentPane().setBackground(Color.WHITE);
@@ -61,6 +63,9 @@ public  class Fenetre extends JFrame {
                         LOGGER.debug(" Creating input stream from " + theseExcel.getPath());
                         CheckService checkService = new CheckService(fileIn);
                         checkService.processExcelFile();
+                        LOGGER.debug(" Sending email with attachement");
+                        MailService mailService = new MailService(Fenetre.applicationContext);
+                        mailService.sendEmail();
                     }
                     else {
                         LOGGER.warn("Le fichier "+theseExcel.getPath()+" n'existe pas");

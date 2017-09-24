@@ -94,7 +94,6 @@ public class CheckService {
             LOGGER.error(e.getMessage());
         } catch ( Exception e) {
             e.printStackTrace();
-        } finally {
         }
     }
 
