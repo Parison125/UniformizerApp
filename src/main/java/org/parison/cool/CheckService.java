@@ -85,9 +85,15 @@ public class CheckService {
             fileIn.close();
 
             LOGGER.debug("Writing changes into theseModifie.xlsx");
-            FileOutputStream outFile =new FileOutputStream(new File("etc/theseModifie.xlsx"));
+            LOGGER.debug("Current directory = "+System.getProperty("user.dir"));
+            LOGGER.debug("User home = "+System.getProperty("user.home"));
+            File sortie = new File(System.getProperty("user.home")+"\\etc\\theseModifie.xlsx");
+            //FileWriter fileWriter = new FileWriter(sortie);
+            FileOutputStream outFile = new FileOutputStream(sortie);
+            LOGGER.debug("File to write : " + System.getProperty("user.dir")+"\\etc\\theseModifie.xlsx" );
             workbook.write(outFile);
             LOGGER.debug("Done writing.");
+            outFile.flush();
             outFile.close();
 
         } catch (IOException e) {

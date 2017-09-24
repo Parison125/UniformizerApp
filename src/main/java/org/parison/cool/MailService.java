@@ -49,8 +49,11 @@ public class MailService {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "587");
-
+        props.put("mail.smtp.port", "465");
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "false");
         LOGGER.debug("Getting email session");
 
         // Get the Session object.
@@ -79,7 +82,7 @@ public class MailService {
             BodyPart messageBodyPart = new MimeBodyPart();
 
             // Now set the actual message
-            messageBodyPart.setText("Veuillez trouver en pièce jointe le fichier excel traité. \n Cordialement");
+            messageBodyPart.setText("Veuillez trouver en pièce jointe le fichier excel traité. \nCordialement");
 
             // Create a multipar message
             Multipart multipart = new MimeMultipart();
@@ -87,10 +90,10 @@ public class MailService {
             // Set text message part
             multipart.addBodyPart(messageBodyPart);
 
-            LOGGER.debug("Attach file to email");
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
-            String filename = "etc/theseModifie.xlsx";
+            String filename = System.getProperty("user.dir")+"\\etc\\theseModifie.xlsx";
+            LOGGER.debug("Attach file to email : " + filename);
             DataSource source = new FileDataSource(filename);
             messageBodyPart.setDataHandler(new DataHandler(source));
             messageBodyPart.setFileName(filename);

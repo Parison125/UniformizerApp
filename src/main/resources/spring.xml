@@ -8,7 +8,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
         <property name="username" value="uniformizerapp@gmail.com"/>
         <property name="password" value="CoolWindOfWinter"/>
         <property name="from" value="UniformizerApp@robot.me"/>
-        <property name="to" value="parison.ravalomanda@gmail.com"/>
+        <property name="to" value="mihandri.rak@gmail.com"/>
     </bean>
 
 </beans>

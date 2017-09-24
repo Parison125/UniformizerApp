@@ -18,8 +18,10 @@ public  class Fenetre extends JFrame {
     public Fenetre (ApplicationContext applicationContext) {
         Fenetre.applicationContext = applicationContext;
         this.setTitle("Uniformizer App");
-        this.setSize(300,150);
+        this.setSize(300,175);
         this.getContentPane().setBackground(Color.WHITE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
 
         JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu();
@@ -56,7 +58,7 @@ public  class Fenetre extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
 
                 LOGGER.debug("Beginning application execution ");
-                File theseExcel = new File("etc/these.xlsx");
+                File theseExcel = new File(System.getProperty("user.dir")+"\\etc\\these.xlsx");
                 try {
                     if ( theseExcel.exists()) {
                         InputStream fileIn = new FileInputStream(theseExcel);
